@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./ServiceAccountKeyQuotes.json');
+const serviceAccount = require('./ServiceAccountKeyStayHome.json');
 var app = require('http');
 
 admin.initializeApp({
@@ -34,12 +34,14 @@ loadData();
 
 function loadData(){
 
-    let personsRef = db.collection('persons');
-    let query = personsRef.where("age", "<", 31)
+    let ref = db.collection('tasks');
+    let query = ref.where("taskMasterEmail", "==", "drrhyf@yahoo.com")
     .get()
     .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
+          //tojz(doc.data);
+          return doc.data();
         });
       })
       .catch(err => {
@@ -82,6 +84,7 @@ let allCities = citiesRef.get()
   .then(snapshot => {
     snapshot.forEach(doc => {
       console.log(doc.id, '=>', doc.data());
+      
     });
   })
   .catch(err => {
@@ -90,7 +93,7 @@ let allCities = citiesRef.get()
 
 
   
-    res.end(tojz(person));
+    res.end(tojz(loadData));
 }).listen(3000);
 
 
