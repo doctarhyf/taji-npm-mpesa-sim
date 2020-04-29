@@ -49,11 +49,11 @@ const port = 8080;
     var transaction = require('url').parse(req.url, true).query;
 
     transaction.timestamp = admin.firestore.Timestamp.fromDate(new Date()).seconds * 1000;
-
+    transaction.rot = makeid(10);
     res.write(JSON.stringify(transaction));
 
     
-    db.collection('taji_transactions').doc().set(transaction).then(snapshot => {
+    db.collection('taji_transactions').doc(transaction.rot).set(transaction).then(snapshot => {
 
             console.log('transaction saved successfully');
 
